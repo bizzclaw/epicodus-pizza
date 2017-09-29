@@ -22,7 +22,6 @@ function Pizza(topping) {
 	this.topping = topping;
 }
 
-
 Shop.prototype.AddTopping(name, price) {
 	this.toppings.push(new Topping(name, price));
 }
@@ -32,10 +31,14 @@ Shop.prototype.AddTopping(name, price) {
 $(document).ready(function() {
 	var shop = new Shop(699, "$");
 
-	shop.AddTopping("Cheese", 0);
-	shop.AddTopping("Peporoni", 50);
-	shop.AddTopping("Meat Lovers", 150);
-	shop.AddTopping("Pineapple", 100);
+	shop.AddTopping("Salame", 0);
+	shop.AddTopping("Margherita", 50);
+	shop.AddTopping("Vegitaria", 150);
+	shop.AddTopping("Hawaiian", 100);
+	shop.AddTopping("Mushroom", 100);
+	shop.AddTopping("Marinara", 100);
+	shop.AddTopping("Mexican", 100);
+	shop.AddTopping("Quattro Formaggi", 100);
 
 
 
