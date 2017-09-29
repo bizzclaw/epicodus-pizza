@@ -135,17 +135,12 @@ $(document).ready(function() {
 		cart.forEach(function(cartedPizza) {
 			total += shop.calcPrice(cartedPizza);
 		});
-		var label = $("#cart-title");
-
-		console.log(total);
-
-		total = total.toFixed(2);
 
 		if (total > 0)  {
-			label.text("Cart: " + total + "$")
+			$("#pizza-cart").removeClass("hide");
+			$("#pizza-checkout").text("Checkout: " + total.toFixed(2) + "$")
 		} else {
-			label.text("")
-			$("#pizza-checkout").addClass("disabled");
+			$("#pizza-cart").addClass("hide");
 		}
 	}
 
@@ -154,11 +149,9 @@ $(document).ready(function() {
 		var cartedPizza = Object.assign({id: cart.length}, pizza);
 		cart.push(cartedPizza);
 		updateCartTitle();
-
-		$("#pizza-checkout").removeClass("disabled");
-		$("#pizza-cart").append('<btn class="btn btn-danger cart-button" value="' + cartedPizza.id + '">' + $("#pizza-name").text() + "</btn>");
-
-		$(".cart-button").click(function(){
+		$("#pizza-cart-buttons").append('<btn id="cart-' + cartedPizza.id + '" class="btn btn-danger cart-button" value="' + cartedPizza.id + '">' + $("#pizza-name").text() + "</btn>");
+		console.log();
+		$("#cart-" + cartedPizza.id).click(function(){
 			var id = parseInt($(this).val());
 			cart.splice(id, 1);
 			$(this).remove();
