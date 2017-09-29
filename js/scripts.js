@@ -15,7 +15,7 @@ Shop.prototype.calcPrice = function(pizza)  {
 	var topping = this.toppings[pizza.toppingid];
 	var size = this.sizes[pizza.size];
 
-	return ((this.baseprice + topping.price) * size.pricemult).toFixed(2);
+	return (this.baseprice + topping.price) * size.pricemult;
 }
 
 function Topping(name, price) {
@@ -84,10 +84,13 @@ $(document).ready(function() {
 		var size = shop.sizes[pizza.size];
 		$("#pizza-name").text(size.name + " " + topping.name);
 
-		var price = shop.calcPrice(pizza);
+		var price = shop.calcPrice(pizza).toFixed(2);
 
 		$("#pizza-price").text(price + shop.currency);
 		$(".pizza").attr("src", "img/" + topping.name + ".png");
+
+		// $(".pizza-frame").css("transform", "scale(" + size.pricemult + ")");
+
 		if (!first) {
 			pizzaAnim.reverse();
 		}
@@ -123,5 +126,43 @@ $(document).ready(function() {
 		$(".pizza-selectsize").removeClass("disabled");
 
 		$(this).addClass("disabled");
+	});
+
+	var cart = []
+
+	var updateCartTitle = function() {
+		var total = 0;
+		cart.forEach(function(cartedPizza) {
+			total += shop.calcPrice(cartedPizza);
+		});
+		var label = $("#cart-title");
+
+		console.log(total);
+
+		total = total.toFixed(2);
+
+		if (total > 0)  {
+			label.text("Cart: " + total + "$")
+		} else {
+			label.text("")
+			$("#pizza-checkout").addClass("disabled");
+		}
+	}
+
+	$("#pizza-add-cart").click(function() {
+
+		var cartedPizza = Object.assign({id: cart.length}, pizza);
+		cart.push(cartedPizza);
+		updateCartTitle();
+
+		$("#pizza-checkout").removeClass("disabled");
+		$("#pizza-cart").append('<btn class="btn btn-danger cart-button" value="' + cartedPizza.id + '">' + $("#pizza-name").text() + "</btn>");
+
+		$(".cart-button").click(function(){
+			var id = parseInt($(this).val());
+			cart.splice(id, 1);
+			$(this).remove();
+			updateCartTitle();
+		});
 	});
 });

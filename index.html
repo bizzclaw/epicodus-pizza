@@ -15,15 +15,22 @@
 		<div class="container">
 			<div class="text-center">
 				<h1 class="panel bg-danger">Pippan's Pizza</h1>
-				<button class="pizza-swap btn btn-danger btn-arrow-right" value="-1"> < </button>
-				<img class="pizza" src="img/Salame.png">
-				<button class="pizza-swap btn btn-danger btn-arrow-left" value="1"> > </button>
+				<div class = "pizza-frame">
+					<button class="pizza-swap btn btn-danger btn-arrow-right" value="-1"> < </button>
+					<img class="pizza" src="img/Salame.png">
+					<button class="pizza-swap btn btn-danger btn-arrow-left" value="1"> > </button>
+				</div>
 				<div>
 					<div id="pizza-sizes">
 					</div>
 					<div class="panel bg-danger">
 						<h2 id="pizza-name"></h2>
 						<h3 id="pizza-price"></h2>
+						<button class="btn btn-danger" id="pizza-add-cart">Add to Cart</button>
+						<button class="btn btn-danger disabled" id="pizza-checkout">Checkout</button>
+						<div id="pizza-cart">
+							<h3 id="cart-title"></h2>
+						</div>
 					</div>
 				</div>
 			</div>
