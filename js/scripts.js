@@ -137,10 +137,10 @@ $(document).ready(function() {
 		});
 
 		if (total > 0)  {
-			$("#pizza-cart").removeClass("hide");
+			$("#pizza-cart").fadeIn(300);
 			$("#pizza-checkout").text("Checkout: " + total.toFixed(2) + "$")
 		} else {
-			$("#pizza-cart").addClass("hide");
+			$("#pizza-cart").fadeOut(300);
 		}
 	}
 
