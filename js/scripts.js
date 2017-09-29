@@ -1,13 +1,18 @@
 // ******* Backend ******* //
 function Shop(baseprice, currency) {
 	this.toppings = [];
+	this.sizes = [];
 	this.baseprice = baseprice;
-	this.currency = currency
+	this.currency = currency;
 }
+
+Shop.prototype.addSize = function(name, pricemult) {
+	this.sizes.push(new Size(name, pricemult));
+};
 
 // Combine the base price with the topping price of the given pizza
 Shop.prototype.calcPrice = function(toppingid)  {
-	return this.baseprice + this.toppings[toppingid].price
+	return this.baseprice + this.toppings[toppingid].price;
 }
 
 function Topping(name, price) {
@@ -15,12 +20,18 @@ function Topping(name, price) {
 	this.price = price;
 }
 
-function Pizza(topping) {
-	this.topping = topping;
+function Size(name, pricemult) {
+	this.name = name;
+	this.pricemult = pricemult;
 }
 
-Shop.prototype.AddTopping = function(name, price) {
+Shop.prototype.addTopping = function(name, price) {
 	this.toppings.push(new Topping(name, price));
+}
+
+function Pizza(toppingid, size) {
+	this.toppingid = toppingid;
+	this.size = size;
 }
 
 // ******* JQuery ******* //
@@ -28,14 +39,21 @@ Shop.prototype.AddTopping = function(name, price) {
 $(document).ready(function() {
 	var shop = new Shop(6.99, "$");
 
-	shop.AddTopping("Salame", .50);
-	shop.AddTopping("Margherita", .50);
-	shop.AddTopping("Vegitaria", 1.00);
-	shop.AddTopping("Hawaiian", 1.50);
-	shop.AddTopping("Mushroom", 1.40);
-	shop.AddTopping("Marinara", .50);
-	shop.AddTopping("Mexican", 1);
-	shop.AddTopping("Quattro Formaggi", 1.20);
+	// TOPPINGS DEFINED HERE //
+	shop.addTopping("Salame", .50);
+	shop.addTopping("Margherita", .50);
+	shop.addTopping("Vegitaria", 1.00);
+	shop.addTopping("Hawaiian", 1.50);
+	shop.addTopping("Mushroom", 1.40);
+	shop.addTopping("Marinara", .50);
+	shop.addTopping("Mexican", 1);
+	shop.addTopping("Quattro Formaggi", 1.20);
+
+	// SIZES DEFINED HERE //
+	shop.addSize("Medium", 1);
+	shop.addSize("Italian", 1.1);
+	shop.addSize("Large", 1.15);
+	shop.addSize("Family", 1.2);
 
 	var animtime = 250;
 
@@ -47,13 +65,15 @@ $(document).ready(function() {
 		easing: "easeInQuad"
 	});
 
-	var SwapPizza = function(toppingid, first) {
-		var topping = shop.toppings[toppingid]
-		$("#pizzaname").text(topping.name)
+	var SwapPizza = function(pizza, first) {
+		var topping = shop.toppings[pizza.toppingid]
+		$("#pizza-name").text(topping.name)
 
-		var price = shop.calcPrice(toppingid);
+		var price = shop.calcPrice(pizza.toppingid);
 
-		$("#pizzaprice").text(price + shop.currency);
+		console.log(topping);
+
+		$("#pizza-price").text(price + shop.currency);
 		$(".pizza").attr("src", "img/" + topping.name + ".png");
 		if (!first) {
 			pizzaAnim.reverse();
@@ -65,23 +85,20 @@ $(document).ready(function() {
 		}, animtime)
 	}
 
-	var currentPizza = 0;
+	var pizza = new Pizza(0, 0)
 
-	SwapPizza(currentPizza, true);
+	SwapPizza(pizza, true);
 
 	$(".pizza-swap").click(function() {
 		var dir = parseInt($(this).val());
 
-		currentPizza += dir;
+		pizza.toppingid += dir;
 
-		if (currentPizza >= shop.toppings.length) {
-			currentPizza = 0;
-		} else if (currentPizza < 0) {
-			currentPizza = shop.toppings.length - 1;
+		if (pizza.toppingid >= shop.toppings.length) {
+			pizza.toppingid = 0;
+		} else if (pizza.toppingid < 0) {
+			pizza.toppingid = shop.toppings.length - 1;
 		}
-		console.log(currentPizza);
-		SwapPizza(currentPizza);
+		SwapPizza(pizza, 0);
 	});
-
-
 });
