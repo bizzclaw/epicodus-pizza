@@ -144,6 +144,8 @@ $(document).ready(function() {
 		}
 	}
 
+	// adding and removing from cart //
+
 	$("#pizza-add-cart").click(function() {
 
 		var cartedPizza = Object.assign({id: cart.length}, pizza);
@@ -157,5 +159,29 @@ $(document).ready(function() {
 			$(this).remove();
 			updateCartTitle();
 		});
+	});
+
+	// orderpage //
+
+	var fadeSwap = function(oldclass, newclass, fadetime) {
+		$(oldclass).fadeOut(fadetime);
+		setTimeout(function(){
+			$(newclass).fadeIn(fadetime);
+		}, fadetime)
+	};
+
+	$("#pizza-checkout").click(function(){
+		fadeSwap("#pizza-shop", "#pizza-order", 300)
+	});
+
+	$("#pizza-order-confirm").click(function() {
+		$("#order-confirmation").fadeIn(200);
+		$("#orderer-name").text($("#order-name").val());
+		$("#orderer-address").text($("#order-address").val());
+	});
+
+	$("#pizza-shop-return").click(function() {
+		$("#order-confirmation").fadeOut(300);
+		fadeSwap("#pizza-order", "#pizza-shop", 300)
 	});
 });

@@ -13,8 +13,6 @@
 	</head>
 	<body>
 		<div class="container">
-			<div id="pizza-order" class="text-center">
-			</div>
 			<div id="pizza-shop" class="text-center">
 				<h1 class="panel bg-danger">Pippan's Pizza</h1>
 					<h2 class="bg-danger"> <span id="pizza-name"></span> : <span id="pizza-price"></span></h2>
@@ -35,6 +33,28 @@
 						<br>
 						<button class="btn btn-success" id="pizza-checkout">Checkout</button>
 					</div>
+				</div>
+			</div>
+			<div id="pizza-order">
+				<h1 class="text-center panel bg-danger">Order</h1>
+				<form>
+					<div class="form-group">
+						<br>
+						<label for="order-name">Name:</label>
+						<input id="order-name" type="text" placeholder="John Doe" class="form-control" required>
+						<br>
+						<label for="order-address">Address:</label>
+						<input id="order-address" type="text" placeholder="A place" class="form-control" required>
+					</div>
+				</form>
+				<div class="text-center">
+					<button class="btn btn-danger" id="pizza-order-confirm">Place Order</button>
+					<button class="btn btn-danger" id="pizza-shop-return">Back</button>
+				</div>
+				<div class = "panel bg-danger text-center" id="order-confirmation">
+					<h1>Thank you <span id="orderer-name"></span>!</h1>
+					<h2>Your pizza is being delivered too: <span id="orderer-address"></span></h2>
+					<h3>Estimated Delivery time: 20-30 minutes</h3>
 				</div>
 			</div>
 		</div>
