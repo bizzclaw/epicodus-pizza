@@ -1,12 +1,16 @@
 // ******* Backend ******* //
-
-function Shop(baseprice) {
+function Shop(baseprice, currency) {
 	this.toppings = [];
 	this.baseprice = baseprice;
 }
 
+// Combine the base price with the topping price of the given pizza
 function Shop.prototype.calcPrice(pizza) {
 	return this.baseprice + this.toppings[pizza.topping].price
+}
+
+function Shop.prototype.prettyPrice(amt) {
+	return parseFloat(amt * 0.01) + this.currency
 }
 
 function Topping(name, price) {
@@ -26,7 +30,7 @@ Shop.prototype.AddTopping(name, price) {
 // ******* JQuery ******* //
 
 $(document).ready(function() {
-	var shop = new Shop(700);
+	var shop = new Shop(699, "$");
 
 	shop.AddTopping("Cheese", 0);
 	shop.AddTopping("Peporoni", 50);
