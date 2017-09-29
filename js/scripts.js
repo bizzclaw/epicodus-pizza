@@ -2,15 +2,12 @@
 function Shop(baseprice, currency) {
 	this.toppings = [];
 	this.baseprice = baseprice;
+	this.currency = currency
 }
 
 // Combine the base price with the topping price of the given pizza
-Shop.prototype.calcPrice = function(pizza)  {
-	return this.baseprice + this.toppings[pizza.topping].price
-}
-
-Shop.prototype.prettyPrice = function(amt) {
-	return parseFloat(amt * 0.01) + this.currency
+Shop.prototype.calcPrice = function(toppingid)  {
+	return this.baseprice + this.toppings[toppingid].price
 }
 
 function Topping(name, price) {
@@ -29,16 +26,16 @@ Shop.prototype.AddTopping = function(name, price) {
 // ******* JQuery ******* //
 
 $(document).ready(function() {
-	var shop = new Shop(699, "$");
+	var shop = new Shop(6.99, "$");
 
-	shop.AddTopping("Salame", 50);
-	shop.AddTopping("Margherita", 50);
-	shop.AddTopping("Vegitaria", 100);
-	shop.AddTopping("Hawaiian", 150);
-	shop.AddTopping("Mushroom", 130);
-	shop.AddTopping("Marinara", 50);
-	shop.AddTopping("Mexican", 100);
-	shop.AddTopping("Quattro Formaggi", 120);
+	shop.AddTopping("Salame", .50);
+	shop.AddTopping("Margherita", .50);
+	shop.AddTopping("Vegitaria", 1.00);
+	shop.AddTopping("Hawaiian", 1.50);
+	shop.AddTopping("Mushroom", 1.40);
+	shop.AddTopping("Marinara", .50);
+	shop.AddTopping("Mexican", 1);
+	shop.AddTopping("Quattro Formaggi", 1.20);
 
 	var animtime = 250;
 
@@ -50,9 +47,17 @@ $(document).ready(function() {
 		easing: "easeInQuad"
 	});
 
-	var SwapPizza = function(toppingid) {
+	var SwapPizza = function(toppingid, first) {
 		var topping = shop.toppings[toppingid]
-		$(".pizza").attr("src", "img/" + topping.name + ".png")
+		$("#pizzaname").text(topping.name)
+
+		var price = shop.calcPrice(toppingid);
+
+		$("#pizzaprice").text(price + shop.currency);
+		$(".pizza").attr("src", "img/" + topping.name + ".png");
+		if (!first) {
+			pizzaAnim.reverse();
+		}
 		pizzaAnim.play();
 		setTimeout(function(){
 			pizzaAnim.reverse();
@@ -60,7 +65,23 @@ $(document).ready(function() {
 		}, animtime)
 	}
 
-	SwapPizza(0);
+	var currentPizza = 0;
 
-	
+	SwapPizza(currentPizza, true);
+
+	$(".pizza-swap").click(function() {
+		var dir = parseInt($(this).val());
+
+		currentPizza += dir;
+
+		if (currentPizza >= shop.toppings.length) {
+			currentPizza = 0;
+		} else if (currentPizza < 0) {
+			currentPizza = shop.toppings.length - 1;
+		}
+		console.log(currentPizza);
+		SwapPizza(currentPizza);
+	});
+
+
 });
