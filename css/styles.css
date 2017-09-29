@@ -1,4 +1,11 @@
-.jumbotron-danger {
+body {
+	background-color: rgb(219,147,134);
+	color: rgb(255,196,186);
+}
+
+.bg-danger {
 	background-color: rgb(217, 83, 79);
 	color: rgb(255, 255, 255);
+	margin: 20px;
+	padding: 10px;
 }

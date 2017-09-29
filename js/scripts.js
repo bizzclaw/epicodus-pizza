@@ -15,7 +15,7 @@ Shop.prototype.calcPrice = function(pizza)  {
 	var topping = this.toppings[pizza.toppingid];
 	var size = this.sizes[pizza.size];
 
-	return (this.baseprice + topping.price) * size.pricemult;
+	return ((this.baseprice + topping.price) * size.pricemult).toFixed(2);
 }
 
 function Topping(name, price) {
