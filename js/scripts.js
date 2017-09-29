@@ -11,8 +11,11 @@ Shop.prototype.addSize = function(name, pricemult) {
 };
 
 // Combine the base price with the topping price of the given pizza
-Shop.prototype.calcPrice = function(toppingid)  {
-	return this.baseprice + this.toppings[toppingid].price;
+Shop.prototype.calcPrice = function(pizza)  {
+	var topping = this.toppings[pizza.toppingid];
+	var size = this.sizes[pizza.size];
+
+	return (this.baseprice + topping.price) * size.pricemult;
 }
 
 function Topping(name, price) {
@@ -55,6 +58,17 @@ $(document).ready(function() {
 	shop.addSize("Large", 1.15);
 	shop.addSize("Family", 1.2);
 
+	// Main Frontend Logic //
+
+	// HTML Generation //
+
+	for (i = 0; i < shop.sizes.length; i++) {
+		var size = shop.sizes[i];
+		$("#pizza-sizes").append('<button type="button" class="pizza-selectsize btn btn-danger" value="' + i +'">' + size.name + '</button>')
+	}
+	$(".pizza-selectsize").first().addClass("disabled");
+
+	// Animations //
 	var animtime = 250;
 
 	var pizzaAnim = anime({
@@ -66,12 +80,11 @@ $(document).ready(function() {
 	});
 
 	var SwapPizza = function(pizza, first) {
-		var topping = shop.toppings[pizza.toppingid]
-		$("#pizza-name").text(topping.name)
+		var topping = shop.toppings[pizza.toppingid];
+		var size = shop.sizes[pizza.size];
+		$("#pizza-name").text(size.name + " " + topping.name);
 
-		var price = shop.calcPrice(pizza.toppingid);
-
-		console.log(topping);
+		var price = shop.calcPrice(pizza);
 
 		$("#pizza-price").text(price + shop.currency);
 		$(".pizza").attr("src", "img/" + topping.name + ".png");
@@ -85,6 +98,7 @@ $(document).ready(function() {
 		}, animtime)
 	}
 
+	// Pizza Swapping //
 	var pizza = new Pizza(0, 0)
 
 	SwapPizza(pizza, true);
@@ -99,6 +113,15 @@ $(document).ready(function() {
 		} else if (pizza.toppingid < 0) {
 			pizza.toppingid = shop.toppings.length - 1;
 		}
-		SwapPizza(pizza, 0);
+
+		SwapPizza(pizza);
+	});
+
+	$(".pizza-selectsize").click(function(){
+		pizza.size = parseInt($(this).val());
+		SwapPizza(pizza);
+		$(".pizza-selectsize").removeClass("disabled");
+
+		$(this).addClass("disabled");
 	});
 });
