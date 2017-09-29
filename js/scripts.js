@@ -130,15 +130,20 @@ $(document).ready(function() {
 
 	var cart = []
 
-	var updateCartTitle = function() {
+	var getCartTotal = function() {
 		var total = 0;
 		cart.forEach(function(cartedPizza) {
 			total += shop.calcPrice(cartedPizza);
 		});
+		return total;
+	}
+
+	var updateCartTitle = function() {
+		var total = getCartTotal();
 
 		if (total > 0)  {
 			$("#pizza-cart").fadeIn(300);
-			$("#pizza-checkout").text("Checkout: " + total.toFixed(2) + "$")
+			$("#pizza-checkout").text("Checkout: " + total.toFixed(2) + shop.currency)
 		} else {
 			$("#pizza-cart").fadeOut(300);
 		}
@@ -171,10 +176,12 @@ $(document).ready(function() {
 	};
 
 	$("#pizza-checkout").click(function(){
+		$("#order-total").text(getCartTotal().toFixed(2) + shop.currency);
 		fadeSwap("#pizza-shop", "#pizza-order", 300)
 	});
 
-	$("#pizza-order-confirm").click(function() {
+	$("#pizza-order-confirm").submit(function(event) {
+		event.preventDefault();
 		$("#order-confirmation").fadeIn(200);
 		$("#orderer-name").text($("#order-name").val());
 		$("#orderer-address").text($("#order-address").val());
